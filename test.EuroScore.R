@@ -3,8 +3,8 @@ sex <- c(1,0,1,0,1,0,1,0,1,0)
 x <- data.frame(age,sex)
 source("EuroScore.R")
 EuroScoreAdd(x)
-
-
+a<- 0
+EuroScoreAdd(a)
 
 
 

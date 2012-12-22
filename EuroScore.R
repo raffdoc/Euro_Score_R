@@ -1,6 +1,11 @@
 # EuroScore is a mortality estimation model used in cardiovascular medicine
 # filter the age scores by cut-off 
 EuroScoreAdd <- function(x) {
+  if (is.null(data)) 
+    stop("Dataframe must be specified", call. = FALSE)
+  if (!is.data.frame(data)) {
+    stop("Data must be a dataframe", call. = FALSE)
+  }
   x$phi.age <- NULL
   x$phi.sex <- NULL
   x$phi.cpd <- NULL
