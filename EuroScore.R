@@ -19,6 +19,7 @@ EuroScoreAdd <- function(x) {
   x$phi.sta <- NULL
   x$phi.pisr <- NULL
   x$a.es <- NULL
+  # age variable scoring
  for(i in seq(along=x$age)) { 
      if (x$age[i]>94.99) { x$phi.age[i] <- 8 } else { 
        if (x$age[i]>89.99) { x$phi.age[i] <- 7 } else { 
@@ -30,13 +31,14 @@ EuroScoreAdd <- function(x) {
                    if (x$age[i]>59.99) { x$phi.age[i] <- 1 } else {
                      x$phi.age[i] <- 0}}}}}}}}
    }
- return(x$phi.age)
+ #sex variable
+  for (i in seq(along=x$sex)){
+  if(x$sex[i]==1){x$phi.sex[i]<-1} else {x$phi.sex[i]<- 0}
+  }
+ # addative score output
+  for (i in seq(along=x$a.es)){
+  x$a.es[i] <- sum(x$phi.age[i]+x$phi.sex[i])
+  }
+  x<- data.frame(x,x$a.es)
+  return(x)
 }
-# used the function done in excell and transformed into the R programming langage
-# =IF(A2>94.9,8,SE(A2>89.9,7,SE(A2>84.9,6,SE(A2>79.9,5,SE(A2>74.9,4,SE(A2>69.9,3,SE(A2>64.9,2,SE(A2>59.9,1,0))))))))
-
-# this is the basic logic behid the complex formula of EuroScore
-# if (x$age[i]>59.99) { x$phi.age[i] <- 1 } else {x$phi.age[i] <- 0}
-
-phi.age,phi.sex,phi.cpd,phi.eca,phi.nd,phi.pcs,phi.creat,phi.ae,phi.cps,phi.ua,phi.lv.mo,phi.rmi,phi.ph,phi.em,phi.otcabg,phi.sta,phi.pisr
-
