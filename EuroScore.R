@@ -1,7 +1,23 @@
 # EuroScore is a mortality estimation model used in cardiovascular medicine
 # filter the age scores by cut-off 
-EuroScore <- function(x) {
+EuroScoreAdd <- function(x) {
   x$phi.age <- NULL
+  x$phi.sex <- NULL
+  x$phi.cpd <- NULL
+  x$phi.eca <- NULL
+  x$phi.nd <- NULL
+  x$phi.pcs <- NULL
+  x$phi.creat <- NULL
+  x$phi.ae <- NULL
+  x$phi.cps <- NULL
+  x$phi.ua <- NULL
+  x$phi.lv.mo <- NULL
+  x$phi.rmi <- NULL
+  x$phi.ph <- NULL
+  x$phi.em <- NULL
+  x$phi.otcabg <- NULL
+  x$phi.sta <- NULL
+  x$phi.pisr <- NULL
   x$a.es <- NULL
  for(i in seq(along=x$age)) { 
      if (x$age[i]>94.99) { x$phi.age[i] <- 8 } else { 
@@ -22,4 +38,5 @@ EuroScore <- function(x) {
 # this is the basic logic behid the complex formula of EuroScore
 # if (x$age[i]>59.99) { x$phi.age[i] <- 1 } else {x$phi.age[i] <- 0}
 
+phi.age,phi.sex,phi.cpd,phi.eca,phi.nd,phi.pcs,phi.creat,phi.ae,phi.cps,phi.ua,phi.lv.mo,phi.rmi,phi.ph,phi.em,phi.otcabg,phi.sta,phi.pisr
 
