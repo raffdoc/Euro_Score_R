@@ -32,13 +32,15 @@ EuroScoreAdd <- function(x) {
                      x$phi.age[i] <- 0}}}}}}}}
    }
  #sex variable
-  for (i in seq(along=x$sex)){
+  for (i in seq(along=x$sex)) {
   if(x$sex[i]==1){x$phi.sex[i]<-1} else {x$phi.sex[i]<- 0}
   }
  # addative score output
-  for (i in seq(along=x$a.es)){
-  x$a.es[i] <- sum(x$phi.age[i]+x$phi.sex[i])
+  for (i in seq(along=x$phi.age)){
+    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]
   }
-  x<- data.frame(x,x$a.es)
-  return(x)
+  #x<- data.frame(x,x$a.es)
+  x.out <- subset(x,select=c(age,sex,a.es))
+  # return dataframe
+  return(as.data.frame(x.out))
 }
