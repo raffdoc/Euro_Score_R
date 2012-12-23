@@ -8,7 +8,7 @@ EuroScoreAdd.1 <- function(x,...) {
   }
  
  
-  x$phi.ph <- NULL
+  
   x$phi.em <- NULL
   x$phi.otcabg <- NULL
   x$phi.sta <- NULL
@@ -85,13 +85,27 @@ EuroScoreAdd.1 <- function(x,...) {
   for (i in seq(along=x$rmi)) {
     if(x$rmi[i]==1){x$phi.rmi[i]<-1} else {x$phi.rmi[i]<- 0}
   }
+ # Pulmonary hypertension
+  x$phi.ph <- NULL
+  for (i in seq(along=x$ph)) {
+    if(x$ph[i]==1){x$phi.ph[i]<-1} else {x$phi.ph[i]<- 0}
+  }
+ # 
+  
+  
+  
+  
+  
+  
+  
+  
   
   # addative score output
   for (i in seq(along=x$phi.age)){
-    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]+x$phi.eca[i]+x$phi.nd[i]+x$phi.pcs[i]+ x$phi.creat[i]+x$phi.ae[i]+x$phi.cps[i]+x$phi.ua[i]+x$phi.lv.ef[i]+x$phi.rmi[i]
+    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]+x$phi.eca[i]+x$phi.nd[i]+x$phi.pcs[i]+ x$phi.creat[i]+x$phi.ae[i]+x$phi.cps[i]+x$phi.ua[i]+x$phi.lv.ef[i]+x$phi.rmi[i]+x$phi.ph[i]
   }
   #x<- data.frame(x,x$a.es)
-  x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,lv.ef,rmi,a.es))
+  x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,lv.ef,rmi,ph,a.es))
   # return dataframe
   x.out <- data.frame(x.out)
   return(x.out)
