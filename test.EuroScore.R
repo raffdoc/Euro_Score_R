@@ -8,12 +8,12 @@ creat<- c(1,0,0,0,1,0,1,0,0,1)
 ae <- c(1,0,0,0,1,0,1,0,0,0)
 cps <- c(1,0,0,0,1,0,1,0,0,0)
 ua <- c(1,1,1,0,1,0,1,0,1,0)
+lv.ef <- c(51,32,27,31,35,29,43,65,55,29)
 
 
 
 
-
-x <- data.frame(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua)
+x <- data.frame(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,lv.ef)
 source("EuroScore.R")
 EuroScoreAdd.1(x)
 a<- 0

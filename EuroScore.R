@@ -6,7 +6,7 @@ EuroScoreAdd.1 <- function(x,...) {
   if (!is.data.frame(x)) {
     stop("Data must be a dataframe", call. = FALSE)
   }
-  x$phi.lv.mo <- NULL
+ 
   x$phi.rmi <- NULL
   x$phi.ph <- NULL
   x$phi.em <- NULL
@@ -74,14 +74,21 @@ EuroScoreAdd.1 <- function(x,...) {
   for (i in seq(along=x$ua)) {
     if(x$ua[i]==1){x$phi.ua[i]<-1} else {x$phi.ua[i]<- 0}
   }
- #
+ # LV function espresed as EF
+  x$phi.lv.ef <- NULL
+  for(i in seq(along=x$lv.ef)) {
+  if (x$lv.ef[i]>50) { x$phi.lv.ef[i] <- 0 } else { 
+    if (x$lv.ef[i]>30) { x$phi.lv.ef[i] <- 1 } else { x$phi.lv.ef[i] <- 3}
+  }}
+  
+  
   
   # addative score output
   for (i in seq(along=x$phi.age)){
-    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]+x$phi.eca[i]+x$phi.nd[i]+x$phi.pcs[i]+ x$phi.creat[i]+x$phi.ae[i]+x$phi.cps[i]+x$phi.ua[i]
+    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]+x$phi.eca[i]+x$phi.nd[i]+x$phi.pcs[i]+ x$phi.creat[i]+x$phi.ae[i]+x$phi.cps[i]+x$phi.ua[i]+x$phi.lv.ef[i]
   }
   #x<- data.frame(x,x$a.es)
-  x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,a.es))
+  x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,lv.ef,a.es))
   # return dataframe
   x.out <- data.frame(x.out)
   return(x.out)
