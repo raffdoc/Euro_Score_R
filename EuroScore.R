@@ -9,7 +9,7 @@ EuroScoreAdd.1 <- function(x,...) {
   
   
   
-  x$phi.creat <- NULL
+  
   x$phi.ae <- NULL
   x$phi.cps <- NULL
   x$phi.ua <- NULL
@@ -61,8 +61,11 @@ EuroScoreAdd.1 <- function(x,...) {
   for (i in seq(along=x$pcs)) {
     if(x$pcs[i]==1){x$phi.pcs[i]<-1} else {x$phi.pcs[i]<- 0}
   }
- #
-  
+ # Creatinin level > 200 µmol/ L
+  x$phi.creat <- NULL
+  for (i in seq(along=x$creat)) {
+    if(x$creat[i]==1){x$phi.creat[i]<-1} else {x$phi.creat[i]<- 0}
+  }
  #
   
   
@@ -71,10 +74,10 @@ EuroScoreAdd.1 <- function(x,...) {
   
   # addative score output
   for (i in seq(along=x$phi.age)){
-    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]+x$phi.eca[i]+x$phi.nd[i]+x$phi.pcs[i]
+    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]+x$phi.eca[i]+x$phi.nd[i]+x$phi.pcs[i]+ x$phi.creat[i]
   }
   #x<- data.frame(x,x$a.es)
-  x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,a.es))
+  x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,creat,a.es))
   # return dataframe
   x.out <- data.frame(x.out)
   return(x.out)

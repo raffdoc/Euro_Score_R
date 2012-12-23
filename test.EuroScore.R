@@ -4,8 +4,8 @@ cpd <- c(1,1,1,0,1,0,1,0,1,0)
 eca <- c(1,0,0,0,1,0,1,0,0,0)
 nd <- c(1,0,0,0,1,0,1,0,0,0)
 pcs <- c(1,0,0,0,1,0,1,0,0,0)
-
-x <- data.frame(age,sex,cpd,eca,nd,pcs)
+creat<- c(1,0,0,0,1,0,1,0,0,1)
+x <- data.frame(age,sex,cpd,eca,nd,pcs,creat)
 source("EuroScore.R")
 EuroScoreAdd.1(x)
 a<- 0
