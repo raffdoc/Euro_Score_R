@@ -7,13 +7,13 @@ pcs <- c(1,0,0,0,1,0,1,0,0,0)
 creat<- c(1,0,0,0,1,0,1,0,0,1)
 ae <- c(1,0,0,0,1,0,1,0,0,0)
 cps <- c(1,0,0,0,1,0,1,0,0,0)
+ua <- c(1,1,1,0,1,0,1,0,1,0)
 
 
 
 
 
-
-x <- data.frame(age,sex,cpd,eca,nd,pcs,creat,ae,cps)
+x <- data.frame(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua)
 source("EuroScore.R")
 EuroScoreAdd.1(x)
 a<- 0
