@@ -9,7 +9,7 @@ EuroScoreAdd.1 <- function(x,...) {
  
  
   
-  x$phi.em <- NULL
+  
   x$phi.otcabg <- NULL
   x$phi.sta <- NULL
   x$phi.pisr <- NULL
@@ -33,18 +33,18 @@ EuroScoreAdd.1 <- function(x,...) {
   if(x$sex[i]==1){x$phi.sex[i]<-1} else {x$phi.sex[i]<- 0}
   }
 
-  #Chronic Pulmonary disease variable
+  #Chronic Pulmonary disease (Long term use of bronchodilators or steroids for lung disease)
   x$phi.cpd <- NULL
   for (i in seq(along=x$cpd)) {
     if(x$cpd[i]==1){x$phi.cpd[i]<-1} else {x$phi.cpd[i]<- 0}
   }
- # Extracardiac arteriopathy
+ # Extracardiac arteriopathy (One or more of claudication, carotid occlusion  or >50% stenosis, previous or planned intervention on the abdominal aorta, limb arteries or carotids)
   x$phi.eca <- NULL
   for (i in seq(along=x$eca)) {
     if(x$eca[i]==1){x$phi.eca[i]<-1} else {x$phi.eca[i]<- 0}
   }
 
- # Neurological disfunction
+ # Neurological disfunction (Disease severely affecting ambulation or day-to-day functioning)
   x$phi.nd <- NULL
     for (i in seq(along=x$nd)) {
     if(x$nd[i]==1){x$phi.nd[i]<-1} else {x$phi.nd[i]<- 0}
@@ -59,17 +59,17 @@ EuroScoreAdd.1 <- function(x,...) {
   for (i in seq(along=x$creat)) {
     if(x$creat[i]==1){x$phi.creat[i]<-1} else {x$phi.creat[i]<- 0}
   }
- # Active endocardities
+ # Active endocardities (Patient still on antibiotic treatment for endocarditis at time of surgery)
   x$phi.ae <- NULL
   for (i in seq(along=x$ae)) {
     if(x$ae[i]==1){x$phi.ae[i]<-1} else {x$phi.ae[i]<- 0}
   }
- # Critical perioperative state
+ # Critical perioperative state (Ventricular Tachycardia / Ventricular Fibrillation or aborted sudden death, preoperative cardiac massage, preoperative ventilation before anaesthetic room, preoperative inotropes or IABP, preoperative Acute Renal Failure (anuria or oliguria <10ml/hr))
   x$phi.cps <- NULL
   for (i in seq(along=x$cps)) {
     if(x$cps[i]==1){x$phi.cps[i]<-1} else {x$phi.cps[i]<- 0}
   }
- # Anstable angina
+ # Anstable angina ( Rest angina requiring i.v. nitrates until arrival in anaesthetic room)
   x$phi.ua <- NULL
   for (i in seq(along=x$ua)) {
     if(x$ua[i]==1){x$phi.ua[i]<-1} else {x$phi.ua[i]<- 0}
@@ -80,19 +80,21 @@ EuroScoreAdd.1 <- function(x,...) {
   if (x$lv.ef[i]>50) { x$phi.lv.ef[i] <- 0 } else { 
     if (x$lv.ef[i]>30) { x$phi.lv.ef[i] <- 1 } else { x$phi.lv.ef[i] <- 3}
   }}
- # Recent myocardial infarction
+ # Recent myocardial infarction (Myocardial infarction within 90 days)
   x$phi.rmi <- NULL
   for (i in seq(along=x$rmi)) {
     if(x$rmi[i]==1){x$phi.rmi[i]<-1} else {x$phi.rmi[i]<- 0}
   }
- # Pulmonary hypertension
+ # Pulmonary hypertension (Systolic pulmonary artery pressure >60mmHg)
   x$phi.ph <- NULL
   for (i in seq(along=x$ph)) {
     if(x$ph[i]==1){x$phi.ph[i]<-1} else {x$phi.ph[i]<- 0}
   }
- # 
-  
-  
+ # Emergency (Operation before beginning of next working day)
+  x$phi.em <- NULL
+  for (i in seq(along=x$em)) {
+    if(x$em[i]==1){x$phi.em[i]<-1} else {x$phi.em[i]<- 0}
+  }
   
   
   
@@ -102,10 +104,10 @@ EuroScoreAdd.1 <- function(x,...) {
   
   # addative score output
   for (i in seq(along=x$phi.age)){
-    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]+x$phi.eca[i]+x$phi.nd[i]+x$phi.pcs[i]+ x$phi.creat[i]+x$phi.ae[i]+x$phi.cps[i]+x$phi.ua[i]+x$phi.lv.ef[i]+x$phi.rmi[i]+x$phi.ph[i]
+    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]+x$phi.eca[i]+x$phi.nd[i]+x$phi.pcs[i]+ x$phi.creat[i]+x$phi.ae[i]+x$phi.cps[i]+x$phi.ua[i]+x$phi.lv.ef[i]+x$phi.rmi[i]+x$phi.ph[i]+x$phi.em[i]
   }
   #x<- data.frame(x,x$a.es)
-  x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,lv.ef,rmi,ph,a.es))
+  x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,lv.ef,rmi,ph,em,a.es))
   # return dataframe
   x.out <- data.frame(x.out)
   return(x.out)
