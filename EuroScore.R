@@ -9,9 +9,6 @@ EuroScoreAdd.1 <- function(x,...) {
   
   
   
-  
-  x$phi.nd <- NULL
-  x$phi.pcs <- NULL
   x$phi.creat <- NULL
   x$phi.ae <- NULL
   x$phi.cps <- NULL
@@ -53,17 +50,31 @@ EuroScoreAdd.1 <- function(x,...) {
   for (i in seq(along=x$eca)) {
     if(x$eca[i]==1){x$phi.eca[i]<-1} else {x$phi.eca[i]<- 0}
   }
- # addative score output
-  for (i in seq(along=x$phi.age)){
-    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]+x$phi.eca[i]
+
+ # Neurological disfunction
+  x$phi.nd <- NULL
+    for (i in seq(along=x$nd)) {
+    if(x$nd[i]==1){x$phi.nd[i]<-1} else {x$phi.nd[i]<- 0}
+  }
+ # Previous Cardiac Surgery
+  x$phi.pcs <- NULL
+  for (i in seq(along=x$pcs)) {
+    if(x$pcs[i]==1){x$phi.pcs[i]<-1} else {x$phi.pcs[i]<- 0}
   }
  #
   
-  
  #
   
+  
+  
+  
+  
+  # addative score output
+  for (i in seq(along=x$phi.age)){
+    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]+x$phi.eca[i]+x$phi.nd[i]+x$phi.pcs[i]
+  }
   #x<- data.frame(x,x$a.es)
-  x.out <- subset(x,select=c(age,sex,cpd,a.es))
+  x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,a.es))
   # return dataframe
   x.out <- data.frame(x.out)
   return(x.out)
