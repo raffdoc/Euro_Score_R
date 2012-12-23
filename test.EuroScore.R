@@ -18,6 +18,7 @@ pisr<- c(1,0,0,0,1,0,1,0,0,1)
 x <- data.frame(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,lv.ef,rmi,ph,em,ot.icabg,sta,pisr)
 source("EuroScore.R")
 EuroScoreAdd.1(x)
+EuroScoreLog.1(x)
 a<- 0
 EuroScoreAdd.1(a)
 

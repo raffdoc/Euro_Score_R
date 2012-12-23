@@ -126,7 +126,7 @@ EuroScoreLog.1  <- function(x,...) {
   # age variable scoring by age groups
   x$log.age <- NULL
   for(i in seq(along=x$age)) { 
-    if (x$age[i]< 59) { x$log.age[i] <- 0.0666354 } else {x$log.age[i] <- 0.0666354(x$age[i]-58)}
+    if (x$age[i]< 59) { x$log.age[i] <- 0.0666354 } else {x$log.age[i] <- 0.0666354*(x$age[i]-58)}
   }
   #sex variable
   x$log.sex <- NULL
@@ -213,8 +213,9 @@ EuroScoreLog.1  <- function(x,...) {
   }
   # addative score output
   for (i in seq(along=x$log.age)){
-    x$log.es[i] <- exp(x$log.age[i]+x$log.sex[i]+x$log.cpd[i]+x$log.eca[i]+x$log.nd[i]+x$log.pcs[i]+ x$log.creat[i]+x$log.ae[i]+x$log.cps[i]+x$log.ua[i]+x$log.lv.ef[i]+x$log.rmi[i]+x$log.ph[i]+x$log.em[i]+x$log.ot.icabg[i]+x$log.sta[i]+x$log.pisr[i]
-  )}
+    x$log.es[i] <- exp(-4.789594+x$log.age[i]+x$log.sex[i]+x$log.cpd[i]+x$log.eca[i]+x$log.nd[i]+x$log.pcs[i]+ x$log.creat[i]+x$log.ae[i]+x$log.cps[i]+x$log.ua[i]+x$log.lv.ef[i]+x$log.rmi[i]+x$log.ph[i]+x$log.em[i]+x$log.ot.icabg[i]+x$log.sta[i]+x$log.pisr[i]
+    )/(1+exp(-4.789594+x$log.age[i]+x$log.sex[i]+x$log.cpd[i]+x$log.eca[i]+x$log.nd[i]+x$log.pcs[i]+ x$log.creat[i]+x$log.ae[i]+x$log.cps[i]+x$log.ua[i]+x$log.lv.ef[i]+x$log.rmi[i]+x$log.ph[i]+x$log.em[i]+x$log.ot.icabg[i]+x$log.sta[i]+x$log.pisr[i]
+    ))}
   #x<- data.frame(x,x$log.es)
   x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,lv.ef,rmi,ph,em,ot.icabg,sta,pisr,log.es))
   # return dataframe
