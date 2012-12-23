@@ -1,15 +1,15 @@
 # EuroScore is a mortality estimation model used in cardiovascular medicine
 # filter the age scores by cut-off 
-EuroScoreAdd <- function(x,...) {
+EuroScoreAdd.1 <- function(x,...) {
   if (is.null(x)) 
     stop("Dataframe must be specified", call. = FALSE)
   if (!is.data.frame(x)) {
     stop("Data must be a dataframe", call. = FALSE)
   }
-  x$phi.age <- NULL
-  x$phi.sex <- NULL
-  x$phi.cpd <- NULL
-  x$phi.eca <- NULL
+  
+  
+  
+  
   x$phi.nd <- NULL
   x$phi.pcs <- NULL
   x$phi.creat <- NULL
@@ -24,7 +24,8 @@ EuroScoreAdd <- function(x,...) {
   x$phi.sta <- NULL
   x$phi.pisr <- NULL
   x$a.es <- NULL
-  # age variable scoring
+  # age variable scoring by age groups
+  x$phi.age <- NULL
  for(i in seq(along=x$age)) { 
      if (x$age[i]>94.99) { x$phi.age[i] <- 8 } else { 
        if (x$age[i]>89.99) { x$phi.age[i] <- 7 } else { 
@@ -37,18 +38,30 @@ EuroScoreAdd <- function(x,...) {
                      x$phi.age[i] <- 0}}}}}}}}
    }
  #sex variable
+  x$phi.sex <- NULL
   for (i in seq(along=x$sex)) {
   if(x$sex[i]==1){x$phi.sex[i]<-1} else {x$phi.sex[i]<- 0}
   }
 
   #Chronic Pulmonary disease variable
+  x$phi.cpd <- NULL
   for (i in seq(along=x$cpd)) {
     if(x$cpd[i]==1){x$phi.cpd[i]<-1} else {x$phi.cpd[i]<- 0}
   }
+ # Extracardiac arteriopathy
+  x$phi.eca <- NULL
+  for (i in seq(along=x$eca)) {
+    if(x$eca[i]==1){x$phi.eca[i]<-1} else {x$phi.eca[i]<- 0}
+  }
  # addative score output
   for (i in seq(along=x$phi.age)){
-    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]
+    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]+x$phi.eca[i]
   }
+ #
+  
+  
+ #
+  
   #x<- data.frame(x,x$a.es)
   x.out <- subset(x,select=c(age,sex,cpd,a.es))
   # return dataframe
