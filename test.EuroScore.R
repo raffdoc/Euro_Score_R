@@ -13,8 +13,8 @@ rmi <- c(1,0,0,0,1,0,1,0,0,1)
 ph <- c(1,0,0,0,1,0,1,0,0,1)
 em<- c(1,0,0,0,1,0,1,0,0,1)
 ot.icabg<- c(1,0,0,0,1,0,1,0,0,1)
-
-x <- data.frame(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,lv.ef,rmi,ph,em,ot.icabg)
+sta<- c(1,0,0,0,1,0,1,0,0,1)
+x <- data.frame(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,lv.ef,rmi,ph,em,ot.icabg,sta)
 source("EuroScore.R")
 EuroScoreAdd.1(x)
 a<- 0

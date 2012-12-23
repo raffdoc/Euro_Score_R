@@ -11,7 +11,7 @@ EuroScoreAdd.1 <- function(x,...) {
   
   
   
-  x$phi.sta <- NULL
+  
   x$phi.pisr <- NULL
   x$a.es <- NULL
   # age variable scoring by age groups
@@ -100,17 +100,20 @@ EuroScoreAdd.1 <- function(x,...) {
   for (i in seq(along=x$ot.icabg)) {
     if(x$ot.icabg[i]==1){x$phi.ot.icabg[i]<-1} else {x$phi.ot.icabg[i]<- 0}
   }
-  
-  
-  
+ # Surgery on thoracic aorta
+  x$phi.sta <- NULL
+  for (i in seq(along=x$sta)) {
+    if(x$sta[i]==1){x$phi.sta[i]<-1} else {x$phi.sta[i]<- 0}
+  }
+ # 
   
   
   # addative score output
   for (i in seq(along=x$phi.age)){
-    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]+x$phi.eca[i]+x$phi.nd[i]+x$phi.pcs[i]+ x$phi.creat[i]+x$phi.ae[i]+x$phi.cps[i]+x$phi.ua[i]+x$phi.lv.ef[i]+x$phi.rmi[i]+x$phi.ph[i]+x$phi.em[i]+x$phi.ot.icabg[i]
+    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]+x$phi.eca[i]+x$phi.nd[i]+x$phi.pcs[i]+ x$phi.creat[i]+x$phi.ae[i]+x$phi.cps[i]+x$phi.ua[i]+x$phi.lv.ef[i]+x$phi.rmi[i]+x$phi.ph[i]+x$phi.em[i]+x$phi.ot.icabg[i]+x$phi.sta[i]
   }
   #x<- data.frame(x,x$a.es)
-  x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,lv.ef,rmi,ph,em,ot.icabg,a.es))
+  x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,lv.ef,rmi,ph,em,ot.icabg,sta,a.es))
   # return dataframe
   x.out <- data.frame(x.out)
   return(x.out)
