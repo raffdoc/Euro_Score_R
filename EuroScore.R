@@ -7,7 +7,7 @@ EuroScoreAdd.1 <- function(x,...) {
     stop("Data must be a dataframe", call. = FALSE)
   }
  
-  x$phi.rmi <- NULL
+ 
   x$phi.ph <- NULL
   x$phi.em <- NULL
   x$phi.otcabg <- NULL
@@ -80,15 +80,18 @@ EuroScoreAdd.1 <- function(x,...) {
   if (x$lv.ef[i]>50) { x$phi.lv.ef[i] <- 0 } else { 
     if (x$lv.ef[i]>30) { x$phi.lv.ef[i] <- 1 } else { x$phi.lv.ef[i] <- 3}
   }}
-  
-  
+ # Recent myocardial infarction
+  x$phi.rmi <- NULL
+  for (i in seq(along=x$rmi)) {
+    if(x$rmi[i]==1){x$phi.rmi[i]<-1} else {x$phi.rmi[i]<- 0}
+  }
   
   # addative score output
   for (i in seq(along=x$phi.age)){
-    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]+x$phi.eca[i]+x$phi.nd[i]+x$phi.pcs[i]+ x$phi.creat[i]+x$phi.ae[i]+x$phi.cps[i]+x$phi.ua[i]+x$phi.lv.ef[i]
+    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]+x$phi.eca[i]+x$phi.nd[i]+x$phi.pcs[i]+ x$phi.creat[i]+x$phi.ae[i]+x$phi.cps[i]+x$phi.ua[i]+x$phi.lv.ef[i]+x$phi.rmi[i]
   }
   #x<- data.frame(x,x$a.es)
-  x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,lv.ef,a.es))
+  x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,lv.ef,rmi,a.es))
   # return dataframe
   x.out <- data.frame(x.out)
   return(x.out)
