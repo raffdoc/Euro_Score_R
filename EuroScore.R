@@ -6,13 +6,6 @@ EuroScoreAdd.1 <- function(x,...) {
   if (!is.data.frame(x)) {
     stop("Data must be a dataframe", call. = FALSE)
   }
- 
- 
-  
-  
-  
-  
-  x$phi.pisr <- NULL
   x$a.es <- NULL
   # age variable scoring by age groups
   x$phi.age <- NULL
@@ -105,15 +98,17 @@ EuroScoreAdd.1 <- function(x,...) {
   for (i in seq(along=x$sta)) {
     if(x$sta[i]==1){x$phi.sta[i]<-1} else {x$phi.sta[i]<- 0}
   }
- # 
-  
-  
+ # Post infactual septal rupture
+  x$phi.pisr <- NULL
+  for (i in seq(along=x$pisr)) {
+    if(x$pisr[i]==1){x$phi.pisr[i]<-1} else {x$phi.pisr[i]<- 0}
+  }
   # addative score output
   for (i in seq(along=x$phi.age)){
-    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]+x$phi.eca[i]+x$phi.nd[i]+x$phi.pcs[i]+ x$phi.creat[i]+x$phi.ae[i]+x$phi.cps[i]+x$phi.ua[i]+x$phi.lv.ef[i]+x$phi.rmi[i]+x$phi.ph[i]+x$phi.em[i]+x$phi.ot.icabg[i]+x$phi.sta[i]
+    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]+x$phi.eca[i]+x$phi.nd[i]+x$phi.pcs[i]+ x$phi.creat[i]+x$phi.ae[i]+x$phi.cps[i]+x$phi.ua[i]+x$phi.lv.ef[i]+x$phi.rmi[i]+x$phi.ph[i]+x$phi.em[i]+x$phi.ot.icabg[i]+x$phi.sta[i]+x$phi.pisr[i]
   }
   #x<- data.frame(x,x$a.es)
-  x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,lv.ef,rmi,ph,em,ot.icabg,sta,a.es))
+  x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,lv.ef,rmi,ph,em,ot.icabg,sta,pisr,a.es))
   # return dataframe
   x.out <- data.frame(x.out)
   return(x.out)
