@@ -10,7 +10,7 @@ EuroScoreAdd.1 <- function(x,...) {
   
   
   
-  x$phi.ae <- NULL
+  
   x$phi.cps <- NULL
   x$phi.ua <- NULL
   x$phi.lv.mo <- NULL
@@ -66,18 +66,20 @@ EuroScoreAdd.1 <- function(x,...) {
   for (i in seq(along=x$creat)) {
     if(x$creat[i]==1){x$phi.creat[i]<-1} else {x$phi.creat[i]<- 0}
   }
- #
-  
-  
+ # Active endocardities
+  x$phi.ae <- NULL
+  for (i in seq(along=x$ae)) {
+    if(x$ae[i]==1){x$phi.ae[i]<-1} else {x$phi.ae[i]<- 0}
+  }
   
   
   
   # addative score output
   for (i in seq(along=x$phi.age)){
-    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]+x$phi.eca[i]+x$phi.nd[i]+x$phi.pcs[i]+ x$phi.creat[i]
+    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]+x$phi.eca[i]+x$phi.nd[i]+x$phi.pcs[i]+ x$phi.creat[i]+x$phi.ae[i]
   }
   #x<- data.frame(x,x$a.es)
-  x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,creat,a.es))
+  x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,creat,ae,a.es))
   # return dataframe
   x.out <- data.frame(x.out)
   return(x.out)
