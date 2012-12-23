@@ -1,9 +1,9 @@
 # EuroScore is a mortality estimation model used in cardiovascular medicine
 # filter the age scores by cut-off 
-EuroScoreAdd <- function(x) {
-  if (is.null(data)) 
+EuroScoreAdd <- function(x,...) {
+  if (is.null(x)) 
     stop("Dataframe must be specified", call. = FALSE)
-  if (!is.data.frame(data)) {
+  if (!is.data.frame(x)) {
     stop("Data must be a dataframe", call. = FALSE)
   }
   x$phi.age <- NULL
@@ -40,12 +40,18 @@ EuroScoreAdd <- function(x) {
   for (i in seq(along=x$sex)) {
   if(x$sex[i]==1){x$phi.sex[i]<-1} else {x$phi.sex[i]<- 0}
   }
+
+  #Chronic Pulmonary disease variable
+  for (i in seq(along=x$cpd)) {
+    if(x$cpd[i]==1){x$phi.cpd[i]<-1} else {x$phi.cpd[i]<- 0}
+  }
  # addative score output
   for (i in seq(along=x$phi.age)){
-    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]
+    x$a.es[i] <- x$phi.age[i]+x$phi.sex[i]+x$phi.cpd[i]
   }
   #x<- data.frame(x,x$a.es)
-  x.out <- subset(x,select=c(age,sex,a.es))
+  x.out <- subset(x,select=c(age,sex,cpd,a.es))
   # return dataframe
-  return(as.data.frame(x.out))
+  x.out <- data.frame(x.out)
+  return(x.out)
 }
