@@ -110,7 +110,8 @@ EuroScoreAdd.1 <- function(x,...) {
   x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,lv.ef,rmi,ph,em,ot.icabg,sta,pisr,a.es))
   # return dataframe
   x.out <- data.frame(x.out)
-  return(x.out)
+  #return(x.out)
+  x.out
 }
 
 
@@ -221,4 +222,166 @@ EuroScoreLog.1  <- function(x,...) {
   x.out <- data.frame(x.out)
   return(x.out)
 }
+
+
+# EuroScore II ( only logistic)
+
+EuroScoreLog.II  <- function(x,...) {
+  if (is.null(x)) 
+    stop("Dataframe must be specified", call. = FALSE)
+  if (!is.data.frame(x)) {
+    stop("Data must be a dataframe", call. = FALSE)
+  }
+  x$log.es <- NULL
+  # age variable scoring by age groups
+  x$log.age <- NULL
+  for(i in seq(along=x$age)) { 
+    if (x$age[i]< 60) { x$log.age[i] <- 0.0285181 } else {x$log.age[i] <- 0.0285181*(x$age[i]-60)}
+  }
+  #sex variable
+  x$log.sex <- NULL
+  for (i in seq(along=x$sex)) {
+    if(x$sex[i]==1){x$log.sex[i]<-0.2196434} else {x$log.sex[i]<- 0}
+  }
+  
+  # Renal impairment - there are now 3 categories based on creatinine clearance calculated using Cockcroft-Gault formula. Unlike serum creatinine in the old EuroSCORE model, some of the weighting for age is directly incorporated into this factor, as age is a component of creatinine clearance. The 3 categories are:
+  # Creatinine clearance (ml/min) =   (140-age (years))   x   weight (kg)   x   (0.85 if female)    /   [72 x serum creatinine (mg/dl)]
+  # on dialysis (regardless of serum creatinine level) code for database is 4
+  # severely impaired renal function (<50 ml/min) off dialysis database is 3
+  # moderately impaired renal function (50-85 ml/min) code for database is 2
+  # normal renal function ( > 85 ml/min) code for database 1
+  x$log.ri <- NULL
+  for(i in seq(along=x$ri)) { 
+    if (x$ri[i]==1) { x$log.ri[i] <- 0 } else { 
+      if (x$ri[i]==2) { x$log.ri[i] <- 0.303553 } else { 
+        if (x$ri[i]==3) { x$log.ri[i] <- 0.8592256 } else {x$log.ri[i] <- 0.6421508}
+      }}} 
+  
+  # Extracardiac arteriopathy - one or more of the following
+  # claudication
+  # carotid occlusion  or >50% stenosis
+  # amputation for arterial disease
+  # previous or planned intervention on the abdominal aorta, limb arteries or carotids 
+  x$log.eca <- NULL
+  for (i in seq(along=x$eca)) {
+    if(x$eca[i]==1){x$log.eca[i]<- 0.5360268} else {x$log.eca[i]<- 0}
+  }
+  # Poor mobility - severe impairment of mobility secondary to musculoskeletal 
+  # or neurological dysfunction
+  x$log.pm <- NULL
+  for (i in seq(along=x$pm)) {
+    if(x$pm[i]==1){x$log.pm[i]<- 0.2407181} else {x$log.pm[i]<- 0}
+  }
+  # Previous Cardiac Surgery
+  x$log.pcs <- NULL
+  for (i in seq(along=x$pcs)) {
+    if(x$pcs[i]==1){x$log.pcs[i]<-1.118599} else {x$log.pcs[i]<- 0}
+  }
+  # Chronic lung disease - long term use of bronchodilators or steroids for lung disease
+  x$log.cld <- NULL
+  for (i in seq(along=x$cld)) {
+    if(x$cld[i]==1){x$log.cld[i]<-0.1886564} else {x$log.cld[i]<- 0}
+  }
+
+  # Active endocarditis - patient still on antibiotic treatment for endocarditis at time of surgery
+  x$log.ae <- NULL
+  for (i in seq(along=x$ae)) {
+    if(x$ae[i]==1){x$log.ae[i]<-0.6194522} else {x$log.ae[i]<- 0}
+  }
+  #  Critical preoperative state   ventricular tachycardia or ventricular fibrillation or aborted sudden death, preoperative cardiac massage, preoperative ventilation before anaesthetic room, preoperative inotropes or IABP, preoperative acute renal failure (anuria or oliguria <10ml/hr)
+  x$log.cps <- NULL
+  for (i in seq(along=x$cps)) {
+    if(x$cps[i]==1){x$log.cps[i]<-1.086517} else {x$log.cps[i]<- 0}
+  }
+  # Diabetis on insulin therapy
+  x$log.doi <- NULL
+  for (i in seq(along=x$doi)) {
+    if(x$doi[i]==1){x$log.doi[i]<-1.086517} else {x$log.doi[i]<- 0}
+  }
+  # NYHA class 
+  # codes for the class are
+  # I code is 1
+  # II code is 2
+  # III code is 3
+  # IV code is 4
+  x$log.nyha <- NULL
+  for(i in seq(along=x$nyha)) { 
+    if (x$nyha[i]==1) { x$log.nyha[i] <- 0 } else { 
+      if (x$nyha[i]==2) { x$log.nyha[i] <- 0.1070545 } else { 
+        if (x$nyha[i]==3) { x$log.nyha[i] <- 0.2958358 } else {x$log.nyha[i] <- 0.5597929}
+      }}} 
+  # CCS class 4 angina    angina at rest
+  x$log.ccs <- NULL
+  for (i in seq(along=x$ccs)) {
+    if(x$ccs[i]==1){x$log.ccs[i]<-0.6558917} else {x$log.ccs[i]<- 0}
+  }
+
+  # LV function espresed as EF
+  # good EF > 50 % 
+  # moderate EF 31-50 % 
+  # poor EF 21-30 % 
+  # very poor < 21 % 
+  x$log.lv.ef <- NULL
+  for(i in seq(along=x$lv.ef)) { 
+    if (x$lv.ef[i]>50) { x$log.lv.ef[i] <- 0 } else { 
+      if (x$lv.ef[i]>31) { x$log.lv.ef[i] <- 0.3150652 } else { 
+        if (x$lv.ef[i]>21) { x$log.lv.ef[i] <- .8084096 } else {x$log.lv.ef[i] <- 0.9346919}
+      }}} 
+  # Recent myocardial infarction (Myocardial infarction within 90 days)
+  x$log.rmi <- NULL
+  for (i in seq(along=x$rmi)) {
+    if(x$rmi[i]==1){x$log.rmi[i]<-0.1528943} else {x$log.rmi[i]<- 0}
+  }
+  # Pulmonary hypertension   systolic pulmonary artery pressure, now in 3 classes 
+  # no pulmonary hypertension < 31 mm Hg  code 1 
+  # moderate: PA systolic pressure (31-55 mm Hg) code 2
+  # severe: PA systolic pressure (>55mm Hg) code 3
+  x$log.ph <- NULL
+  for(i in seq(along=x$ph)) { 
+    if (x$ph[i]==1) { x$log.ph[i] <- 0 } else {
+      if (x$ph[i]==2) {x$log.ph[i] <- 0.1788899 } else { x$log.ri[i] <- 0.3491475}
+      }} 
+  #  Urgency   now four classes:
+   # elective : routine admission for operation. code is 1
+  # urgent: patients who have not been electively admitted for operation but who require intervention or surgery on the current admission for medical reasons. These patients cannot be sent home without a definitive procedure. code is 2
+  # emergency: operation before the beginning of the next working day after decision to operate. code is 3
+  # salvage: patients requiring cardiopulmonary resuscitation (external cardiac massage) en route to the operating theatre or prior to induction of anaesthesia. This does not include cardiopulmonary resuscitation following induction of anaesthesia code is 4
+  x$log.em <- NULL
+  for(i in seq(along=x$em)) { 
+    if (x$em[i]==1) { x$log.em[i] <- 0 } else { 
+      if (x$em[i]==2) { x$log.em[i] <- 0.3174673 } else { 
+        if (x$em[i]==3) { x$log.em[i] <- 0.7039121 } else {x$log.em[i] <- 1.362947}
+      }}}
+  # Weight of the intervention - include major interventions on the heart such as
+  #  isolated CABG code is 1
+  # single non CABG intervention code is 2
+  # two procedures 3
+  # three procedures 4
+  x$log.woi <- NULL
+  for(i in seq(along=x$woi)) { 
+    if (x$woi[i]==1) { x$log.woi[i] <- 0 } else { 
+      if (x$woi[i]==2) { x$log.woi[i] <- 0.0062118 } else { 
+        if (x$woi[i]==3) { x$log.woi[i] <- 0.5521478 } else {x$log.woi[i] <- 0.9724533}
+      }}}
+  # Surgery on thoracic aorta
+  x$log.sta <- NULL
+  for (i in seq(along=x$sta)) {
+    if(x$sta[i]==1){x$log.sta[i]<-0.6527205 } else {x$log.sta[i]<- 0}
+  }
+  
+  # addative score output
+  for (i in seq(along=x$log.age)){
+    x$log.es[i] <- exp(-5.324537+x$log.age[i]+x$log.sex[i]+x$log.ri[i]+x$log.eca[i]+x$log.pm[i]+x$log.pcs[i]+x$log.cld[i]+x$log.ae[i]+x$log.cps[i]+x$log.doi[i]+x$log.nyha[i]+x$log.ccs[i]+x$log.lv.ef[i]+x$log.rmi[i]+x$log.ph[i]+x$log.em[i]+x$log.woi[i]+x$log.sta[i]
+    )/(1+exp(-5.324537+x$log.age[i]+x$log.sex[i]+x$log.ri[i]+x$log.eca[i]+x$log.pm[i]+x$log.pcs[i]+x$log.cld[i]+x$log.ae[i]+x$log.cps[i]+x$log.doi[i]+x$log.nyha[i]+x$log.ccs[i]+x$log.lv.ef[i]+x$log.rmi[i]+x$log.ph[i]+x$log.em[i]+x$log.woi[i]+x$log.sta[i]
+    ))}
+  #x<- data.frame(x,x$log.es)
+  x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,lv.ef,rmi,ph,em,ot.icabg,sta,pisr,log.es))
+  # return dataframe
+  x.out <- data.frame(x.out)
+  return(x.out)
+}
+
+
+
+
 
