@@ -111,7 +111,7 @@ EuroScoreAdd.1 <- function(x,...) {
   # return dataframe
   x.out <- data.frame(x.out)
   #return(x.out)
-  x.out
+  assign("x.out",x.out,pos=.GlobalEnv)
 }
 
 
@@ -220,7 +220,7 @@ EuroScoreLog.1  <- function(x,...) {
   x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,lv.ef,rmi,ph,em,ot.icabg,sta,pisr,log.es))
   # return dataframe
   x.out <- data.frame(x.out)
-  return(x.out)
+  assign("x.out",x.out,pos=.GlobalEnv)
 }
 
 
@@ -375,10 +375,10 @@ EuroScoreLog.II  <- function(x,...) {
     )/(1+exp(-5.324537+x$log.age[i]+x$log.sex[i]+x$log.ri[i]+x$log.eca[i]+x$log.pm[i]+x$log.pcs[i]+x$log.cld[i]+x$log.ae[i]+x$log.cps[i]+x$log.doi[i]+x$log.nyha[i]+x$log.ccs[i]+x$log.lv.ef[i]+x$log.rmi[i]+x$log.ph[i]+x$log.em[i]+x$log.woi[i]+x$log.sta[i]
     ))}
   #x<- data.frame(x,x$log.es)
-  x.out <- subset(x,select=c(age,sex,cpd,eca,nd,pcs,creat,ae,cps,ua,lv.ef,rmi,ph,em,ot.icabg,sta,pisr,log.es))
+  x.out <- subset(x,select=c(age,sex,ri,eca,pm,pcs,cld,ae,cps,doi,nyha,ccs,lv.ef,rmi,ph,em,woi,sta,log.es))
   # return dataframe
   x.out <- data.frame(x.out)
-  return(x.out)
+  assign("x.out",x.out,pos=.GlobalEnv)
 }
 
 
